@@ -1,0 +1,10 @@
+*.txt
+
+Logs
+
+Reports
+
+*.xlsx
+
+.vs
+*.zip
