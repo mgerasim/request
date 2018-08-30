@@ -36,7 +36,7 @@ if (Path(LogFileName).is_file() == False):
 LogFile = open(LogFileName, "a", encoding='utf-8')
 
 def Log(msg):
-#	print(dt.datetime.today().strftime("%Y-%m-%d %H:%M:%S") + " " + msg )
+	print(dt.datetime.today().strftime("%Y-%m-%d %H:%M:%S") + " " + msg )
 	LogFile.write(dt.datetime.today().strftime("%Y-%m-%d %H:%M:%S") + " " + msg + "\n")
 
 Log("Start script")
@@ -50,17 +50,17 @@ sheet = wb.active
 for row in sheet.rows:
 	try:
 		wsdl = row[0].value
-		Log("Обрабатываем сервер: " + wsdl)
+		Log("Server handling: " + wsdl)
 				
-		Log("Нормализуем")
+		Log("Normalize")
 		wsdl2 = wsdl.replace('&amp;', '&')
 		Log(wsdl2)
 		
-		Log("Кодируем")
+		Log("Encoding")
 		wsdl2 = urllib.parse.quote(wsdl2.encode("utf8"))
 		Log(wsdl2)
 		
-		Log("Нормализуем обратно");
+		Log("Decoding");
 		wsdl3 = wsdl2.replace('%3A' ,':' )
 		wsdl3 = wsdl3.replace('%3D' ,'=' )
 		wsdl3 = wsdl3.replace('%3F' ,'?' )
@@ -77,8 +77,10 @@ for row in sheet.rows:
 		Log(e.args[0])
 		fReport.write(";" + e.args[0] )
 	except  urllib.error.URLError as e:
-		Log(e.code)
-		fReport.write(";" + e.code )
+		Log(str(e.reason))
+		fReport.write(";" + str(e.reason) )
+	except Exception:
+		print('Это что ещё такое?')
 	finally:
 		fReport.write('\n')
 
